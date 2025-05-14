@@ -14,12 +14,8 @@ public class LearnerUtility {
     public boolean removeId(int id){
         return learnerList.removeIf(learner -> learner.getId()==id);
     }
-    public boolean addLearner(Learner learnerNew){
-        for(Learner l:learnerList){
-            if(l.getId()==learnerNew.getId()) return false;
-        }
+    public void addLearner(Learner learnerNew){
         learnerList.add(learnerNew);
-        return true;
     }
 
     void  addSampleData(){

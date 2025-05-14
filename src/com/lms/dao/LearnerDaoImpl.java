@@ -46,10 +46,14 @@ public class LearnerDaoImpl implements LearnerDao{
 
     @Override
     public void insert(Learner learner) throws InvalidInputException {
-        boolean added = learnerUtility.addLearner(learner);
-        if (!added) {
-            throw new InvalidInputException("Learner with this ID already exists.");
+        List<Learner>learnerList=getAll();
+        for(Learner l:learnerList){
+            if(l.getEmail().equals(learner.getEmail()) ||l.getId()==learner.getId()){
+                throw new InvalidInputException("Learner with this Email/ Id already exists.");
+            }
         }
+        learnerUtility.addLearner(learner);
+
     }
 
     public static void main(String[] args) {

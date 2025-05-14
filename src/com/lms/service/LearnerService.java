@@ -28,9 +28,10 @@ public class LearnerService {
 
 
     public void insert(Learner learner)throws InvalidInputException{
-        if (learner.getName() == null || learner.getEmail() == null) {
+        if (learner.getName() == null || learner.getEmail() == null || learner.getName()=="null") {
             throw new InvalidInputException("Learner details cannot be null");
         }
+        if(learner.getName().trim() == "" ||learner.getEmail().trim() == "") throw new InvalidInputException("Learner details cannot be empty");
         learner.setId((int)(Math.random()*1000));
         dao.insert(learner);
     }

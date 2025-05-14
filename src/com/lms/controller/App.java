@@ -61,14 +61,17 @@ public class App {
                         Learner existing=learnerService.getById(editId);
                         System.out.println("Old details: "+existing);
                         sc.nextLine();
-                        System.out.println("Enter new name:");
+                        System.out.println("Enter new name (press n to skip):");
                         String newName = sc.nextLine();
-                        System.out.println("Enter new email:");
+
+                        System.out.println("Enter new email (press n to skip):");
                         String newEmail = sc.nextLine();
 
                         Learner updatedLearner=new Learner();
-                        updatedLearner.setName(newName);
-                        updatedLearner.setEmail(newEmail);
+                        if(newName.equals("n")) updatedLearner.setName(existing.getName());
+                        else updatedLearner.setName(newName);
+                        if(newEmail.equals("n")) updatedLearner.setEmail(existing.getEmail());
+                        else updatedLearner.setEmail(newEmail);
                         Learner result = learnerService.update(editId, updatedLearner);
                         System.out.println(result);
                     } catch (InvalidIdException |InvalidInputException e) {
