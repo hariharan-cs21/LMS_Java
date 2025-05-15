@@ -1,6 +1,7 @@
 package com.lms.dao.impl;
 
 import com.lms.dao.CourseDao;
+import com.lms.exception.InvalidIdException;
 import com.lms.model.Course;
 import com.lms.model.Track;
 import com.lms.utility.DbUtility;
@@ -66,7 +67,32 @@ public class CourseDaoImpl implements CourseDao {
     }
 
     @Override
-    public List<Course> getTrackById() {
-        return null;
+    public List<Course> getCourseByTrackId(int id) throws InvalidIdException, SQLException {
+        Connection con=db.connect();
+        String sql=" select * from course c join track t on c.track_id=t.id where track_id=?";
+        List<Course>list=new ArrayList<>();
+        ResultSet res=null;
+        try{
+            PreparedStatement ps=con.prepareStatement(sql);
+            ps.setInt(1,id);
+            res=ps.executeQuery();
+            while(res.next()){
+                Course course =new Course();
+                course.setTitle(res.getString("title"));
+                course.setFee(res.getDouble("fee"));
+                course.setDisount(res.getDouble("discount"));
+                course.setPublish_date(res.getDate("publish_date").toLocalDate());
+                Track tr=new Track();
+                tr.setName(res.getString("name"));
+                course.setTrack(tr);
+                list.add(course);
+            }
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        db.close(con);
+        return list;
     }
+
 }

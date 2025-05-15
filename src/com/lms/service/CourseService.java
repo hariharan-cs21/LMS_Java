@@ -2,6 +2,7 @@ package com.lms.service;
 
 import com.lms.dao.*;
 import com.lms.dao.impl.*;
+import com.lms.exception.InvalidIdException;
 import com.lms.model.Course;
 import com.lms.model.Track;
 
@@ -30,5 +31,8 @@ public class CourseService {
     }
     public List<Course> getAllCourse() throws SQLException {
         return courseDao.getAll();
+    }
+    public List<Course> getCourseByTrackId(int id) throws SQLException, InvalidIdException {
+        return courseDao.getCourseByTrackId(id);
     }
 }

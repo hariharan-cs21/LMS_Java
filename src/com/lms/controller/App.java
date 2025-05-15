@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, InvalidIdException {
         Scanner sc = new Scanner(System.in);
         LearnerService learnerService = new LearnerService();
         Track track = new Track();
@@ -26,7 +26,8 @@ public class App {
             System.out.println("6. Add Track");
             System.out.println("7. Add Course");
             System.out.println("8. View All Track");
-            System.out.println("9. View All Course");
+            System.out.println("9. View Course By Track");
+            System.out.println("10. View All Course");
             System.out.println("0. To Exit");
             System.out.println("Enter your choice");
             int input = sc.nextInt();
@@ -118,6 +119,18 @@ public class App {
                     tracks.stream().forEach(l-> System.out.println(l));
                     break;
                 case 9:
+                    System.out.println("Enter Track id");
+                    List<Course> c1 = courseService.getCourseByTrackId(sc.nextInt());
+                    System.out.printf("%-20s | %-10s | %-10s | %-12s |  %-15s%n",
+                            "Title", "Fee", "Discount", "Publish Date", "Track Name");
+                    System.out.println("----------------------------------------------------------------------------");
+                    c1.stream().forEach(c-> {
+                        System.out.printf("%-20s | %-10.1f | %-10.1f | %-12s | %-15s%n",
+                                c.getTitle(), c.getFee(), c.getDisount(),
+                                c.getPublish_date(), c.getTrack().getName());
+                    });
+                    break;
+                case 10:
                     List<Course> courses = courseService.getAllCourse();
                     courses.stream().forEach(l-> System.out.println(l));
                     break;
