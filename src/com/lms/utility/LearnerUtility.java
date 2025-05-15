@@ -1,44 +1,41 @@
 package com.lms.utility;
 
+import com.lms.exception.InvalidIdException;
 import com.lms.model.Learner;
 
+import javax.xml.transform.Result;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.*;
 
 public class LearnerUtility {
-    List<Learner> learnerList;
-    {
-        learnerList=new ArrayList<>();
-        addSampleData();
-    }
-    public boolean removeId(int id){
-        return learnerList.removeIf(learner -> learner.getId()==id);
-    }
-    public void addLearner(Learner learnerNew){
-        learnerList.add(learnerNew);
-    }
 
-    void  addSampleData(){
-        Learner l1 = new Learner();
-        l1.setId(1);
-        l1.setName("Virat");
-        l1.setEmail("virat@gmail.com");
 
-        Learner l2 = new Learner();
-        l2.setId(2);
-        l2.setName("Steve");
-        l2.setEmail("steve@gmail.com");
 
-        Learner l3 = new Learner();
-        l3.setId(3);
-        l3.setName("Charlie");
-        l3.setEmail("charlie@gmail.com");
-        learnerList.add(l1);
-        learnerList.add(l2);
-        learnerList.add(l3);
-    }
 
-    public List<Learner> getSampleData() {
+
+    public List<Learner> getAllData() throws SQLException {
+        Connection con=DbUtility.connect();
+        ResultSet rs=null;
+        String query="select * from Learner";
+        List<Learner>learnerList=new ArrayList<>();
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Learner learner = new Learner(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"));
+                learnerList.add(learner);
+            }
+        }
+        catch (SQLException e) {System.out.println(e.getMessage());}
+        DbUtility.close(con);
         return learnerList;
+
     }
 }

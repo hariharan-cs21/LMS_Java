@@ -2,22 +2,31 @@ package com.lms.controller;
 
 import com.lms.exception.InvalidIdException;
 import com.lms.exception.InvalidInputException;
-import com.lms.model.Learner;
-import com.lms.service.LearnerService;
+import com.lms.model.*;
+import com.lms.service.*;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         Scanner sc = new Scanner(System.in);
         LearnerService learnerService = new LearnerService();
+        Track track = new Track();
+        Course course = new Course();
+        CourseService courseService = new CourseService();
+
         while (true) {
             System.out.println("1. Add Learner");
             System.out.println("2. View All Learner");
             System.out.println("3. Delete Learner");
             System.out.println("4. Edit Learner");
             System.out.println("5. Get Learner Info by ID");
+            System.out.println("6. Add Track");
+            System.out.println("7. Add Course");
+            System.out.println("8. View All Track");
+            System.out.println("9. View All Course");
             System.out.println("0. To Exit");
             System.out.println("Enter your choice");
             int input = sc.nextInt();
@@ -34,9 +43,9 @@ public class App {
                         learnerNew.setName(newName);
                         learnerNew.setEmail(newEmail);
                         learnerService.insert(learnerNew);
-                        System.out.println("Learner Addedd Successfully\n"+learnerNew);
+                        System.out.println("Learner Addedd Successfully\n");
                     }
-                    catch (InvalidInputException e){
+                    catch (InvalidInputException | SQLException e){
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -73,8 +82,8 @@ public class App {
                         if(newEmail.equals("n")) updatedLearner.setEmail(existing.getEmail());
                         else updatedLearner.setEmail(newEmail);
                         Learner result = learnerService.update(editId, updatedLearner);
-                        System.out.println(result);
-                    } catch (InvalidIdException |InvalidInputException e) {
+                        System.out.println("Update Successfull");
+                    } catch (InvalidIdException | InvalidInputException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -84,8 +93,33 @@ public class App {
                         Learner learner=learnerService.getById(sc.nextInt());
                         System.out.println(learner);
                     }
-                    catch (InvalidIdException e) {System.out.println(e.getMessage());
-                    }
+                    catch (InvalidIdException e) {System.out.println(e.getMessage());    }
+                    break;
+                case 6:
+                    System.out.println("Enter track name");
+                    track.setName(sc.nextLine());
+                    courseService.insertTrack(track);
+                    System.out.println("Track added in DB");
+                    break;
+                case 7:
+                    System.out.println("Enter title");
+                    course.setTitle(sc.nextLine());
+                    System.out.println("Enter fee");
+                    course.setFee(sc.nextDouble());
+                    System.out.println("Enter discount");
+                    course.setDisount(sc.nextDouble());
+                    System.out.println("Enter Track Id");
+                    int trackId = sc.nextInt();
+                    courseService.insertCourse(course,trackId);
+                    System.out.println("Course added in DB");
+                    break;
+                case 8:
+                    List<Track> tracks = courseService.getAllTracks();
+                    tracks.stream().forEach(l-> System.out.println(l));
+                    break;
+                case 9:
+                    List<Course> courses = courseService.getAllCourse();
+                    courses.stream().forEach(l-> System.out.println(l));
                     break;
                 case 0:
                     return;
