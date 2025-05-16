@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class LearnerDaoImpl implements LearnerDao {
+    DbUtility db=DbUtility.getInstance();
+
     LearnerUtility learnerUtility=new LearnerUtility();
 
     @Override
@@ -23,7 +25,7 @@ public class LearnerDaoImpl implements LearnerDao {
 
     @Override
     public Learner getById(int id) throws InvalidIdException, SQLException {
-        Connection con=DbUtility.connect();
+        Connection con=db.connect();
         ResultSet rs=null;
         Learner learner = new Learner();
         String query="select * from Learner where id =?";
@@ -45,7 +47,7 @@ public class LearnerDaoImpl implements LearnerDao {
 
     @Override
     public void deleteById(int id) throws InvalidIdException, SQLException {
-        Connection con=DbUtility.connect();
+        Connection con=db.connect();
         String query="delete from enroll where learner_id =?";
         PreparedStatement ps1=con.prepareStatement(query);
         ps1.setInt(1,id);
@@ -60,7 +62,7 @@ public class LearnerDaoImpl implements LearnerDao {
     @Override
     public Learner update(int id, Learner learner) throws InvalidIdException, InvalidInputException, SQLException {
         List<Learner>learnerList=getAll();
-        Connection con=DbUtility.connect();
+        Connection con=db.connect();
         String query="update learner set name=?,email=? where id=?";
         PreparedStatement ps=con.prepareStatement(query);
 
@@ -77,7 +79,7 @@ public class LearnerDaoImpl implements LearnerDao {
 
     @Override
     public void insert(Learner learner,int id) throws InvalidInputException, SQLException {
-        Connection con=DbUtility.connect();
+        Connection con=db.connect();
         String query="insert into learner values (?,?,?)";
         try {
             PreparedStatement ps=con.prepareStatement(query);

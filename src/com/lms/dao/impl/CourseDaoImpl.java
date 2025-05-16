@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseDaoImpl implements CourseDao {
-    DbUtility db=new DbUtility();
+    DbUtility db=DbUtility.getInstance();
     @Override
     public void insert(Course course, int trackId) throws SQLException {
         Connection con=db.connect();

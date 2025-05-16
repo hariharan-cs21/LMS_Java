@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrackDaoimpl implements TrackDao {
-    DbUtility db=new DbUtility();
+    DbUtility db=DbUtility.getInstance();
     public void insert(Track track) throws SQLException {
 
         Connection con = db.connect();

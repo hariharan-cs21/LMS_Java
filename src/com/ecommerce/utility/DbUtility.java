@@ -1,29 +1,27 @@
-package com.lms.utility;
+package com.ecommerce.utility;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbUtility {
-    private static String url="jdbc:mysql://localhost:3306/lms_db?useSSL=false";
-    private static String user="root";
-    private static String password="pass";
-    private static String driver="com.mysql.cj.jdbc.Driver";
+    private String url="jdbc:mysql://localhost:3306/mydb?useSSL=false";
+    private String user="root";
+    private String password="pass";
+    private  String driver="com.mysql.cj.jdbc.Driver";
     private static Connection con;
-    private static  DbUtility db=new DbUtility();
-    private DbUtility(){};
+    private DbUtility(){}
+    private static DbUtility db=new DbUtility();
     public static DbUtility getInstance(){
         return db;
     }
-    public static Connection connect() throws SQLException {
-        //load driver
+    public Connection connect() {
         try {
             Class.forName(driver);
-
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e){
             System.out.println(e.getMessage());
         }
-        //establish connection
         try{
             if(con==null || con.isClosed()) con= DriverManager.getConnection(url,user,password);
 
@@ -32,8 +30,7 @@ public class DbUtility {
         }
         return con;
     }
-
-    public static void close(Connection con) throws SQLException {
+    public static void close() throws SQLException {
         if (con != null && !con.isClosed()) {
             con.close();
         }

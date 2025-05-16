@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class EnrollDaoImpl implements EnrollDao {
-    DbUtility db=new DbUtility();
+    DbUtility db=DbUtility.getInstance();
 
     @Override
     public void enroll(Enroll enroll) throws  SQLException {
