@@ -35,4 +35,5 @@ public class CourseService {
     public List<Course> getCourseByTrackId(int id) throws SQLException, InvalidIdException {
         return courseDao.getCourseByTrackId(id);
     }
+
 }

@@ -10,4 +10,5 @@ public interface CourseDao {
     void insert(Course course, int trackId) throws SQLException;
     List<Course> getAll() throws SQLException;
     List<Course> getCourseByTrackId(int id) throws InvalidIdException, SQLException;
+    Course getById(int id) throws InvalidIdException, SQLException;
 }

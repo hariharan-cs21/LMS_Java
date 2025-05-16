@@ -16,7 +16,7 @@ public class App {
         Track track = new Track();
         Course course = new Course();
         CourseService courseService = new CourseService();
-
+EnrollService enrollService=new EnrollService();
         while (true) {
             System.out.println("1. Add Learner");
             System.out.println("2. View All Learner");
@@ -28,6 +28,7 @@ public class App {
             System.out.println("8. View All Track");
             System.out.println("9. View Course By Track");
             System.out.println("10. View All Course");
+            System.out.println("11. Enroll Learner to Course");
             System.out.println("0. To Exit");
             System.out.println("Enter your choice");
             int input = sc.nextInt();
@@ -121,12 +122,12 @@ public class App {
                 case 9:
                     System.out.println("Enter Track id");
                     List<Course> c1 = courseService.getCourseByTrackId(sc.nextInt());
-                    System.out.printf("%-20s | %-10s | %-10s | %-12s |  %-15s%n",
-                            "Title", "Fee", "Discount", "Publish Date", "Track Name");
+                    System.out.printf("%-10d  | %-20s | %-10s | %-10s | %-12s |  %-15s%n",
+                            "Id","Title", "Fee", "Discount", "Publish Date", "Track Name");
                     System.out.println("----------------------------------------------------------------------------");
                     c1.stream().forEach(c-> {
-                        System.out.printf("%-20s | %-10.1f | %-10.1f | %-12s | %-15s%n",
-                                c.getTitle(), c.getFee(), c.getDisount(),
+                        System.out.printf("%-10d | %-20s | %-10.1f | %-10.1f | %-12s | %-15s%n",
+                                c.getId(),c.getTitle(), c.getFee(), c.getDisount(),
                                 c.getPublish_date(), c.getTrack().getName());
                     });
                     break;
@@ -134,6 +135,20 @@ public class App {
                     List<Course> courses = courseService.getAllCourse();
                     courses.stream().forEach(l-> System.out.println(l));
                     break;
+                case 11:
+                System.out.println("Enter Learner ID: ");
+                int learnerID = sc.nextInt();
+                System.out.println("Enter Course ID:");
+                int courseId = sc.nextInt();
+                try{
+                    enrollService.enroll(learnerID,courseId);
+                    System.out.println("Learner Enrolled");
+                }
+                catch (InvalidIdException |SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
+
                 case 0:
                     return;
             }

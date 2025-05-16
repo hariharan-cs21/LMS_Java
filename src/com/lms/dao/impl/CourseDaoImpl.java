@@ -41,7 +41,7 @@ public class CourseDaoImpl implements CourseDao {
     @Override
     public List<Course> getAll() throws SQLException {
         Connection con=db.connect();
-        String sql=" select c.title,c.fee,c.discount,c.publish_Date,t.name from course c join track t on c.track_id = t.id";
+        String sql=" select c.id ,c.title,c.fee,c.discount,c.publish_Date,t.name from course c join track t on c.track_id = t.id";
         List<Course>list=new ArrayList<>();
         ResultSet res=null;
         try{
@@ -49,7 +49,8 @@ public class CourseDaoImpl implements CourseDao {
             res=ps.executeQuery();
             while(res.next()){
                Course course =new Course();
-               course.setTitle(res.getString("title"));
+                course.setId(res.getInt("id"));
+                course.setTitle(res.getString("title"));
                course.setFee(res.getDouble("fee"));
                course.setDisount(res.getDouble("discount"));
                course.setPublish_date(res.getDate("publish_date").toLocalDate());
@@ -78,6 +79,7 @@ public class CourseDaoImpl implements CourseDao {
             res=ps.executeQuery();
             while(res.next()){
                 Course course =new Course();
+                course.setId(res.getInt("id"));
                 course.setTitle(res.getString("title"));
                 course.setFee(res.getDouble("fee"));
                 course.setDisount(res.getDouble("discount"));
@@ -93,6 +95,31 @@ public class CourseDaoImpl implements CourseDao {
         }
         db.close(con);
         return list;
+    }
+    public Course getById(int id) throws SQLException, InvalidIdException {
+        Connection con=db.connect();
+        String sql="select * from course where id=?";
+        ResultSet res=null;
+        Course course =new Course();
+        try{
+            PreparedStatement ps=con.prepareStatement(sql);
+            ps.setInt(1,id);
+            res=ps.executeQuery();
+            if(res.next()){
+                course.setId(res.getInt("id"));
+                course.setTitle(res.getString("title"));
+                course.setFee(res.getDouble("fee"));
+                course.setDisount(res.getDouble("discount"));
+                course.setPublish_date(res.getDate("publish_date").toLocalDate());
+                            }
+            else throw new InvalidIdException("Course Id not found");
+        } catch (InvalidIdException e) {
+            throw new InvalidIdException(e.getMessage());
+        } finally {
+            db.close(con);
+        }
+
+        return course;
     }
 
 }
