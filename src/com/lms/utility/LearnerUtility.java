@@ -29,7 +29,7 @@ public class LearnerUtility {
                 Learner learner = new Learner(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getString("email"));
+                        rs.getString("email"),null);
                 learnerList.add(learner);
             }
         }
